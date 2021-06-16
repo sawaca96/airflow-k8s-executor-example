@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "airflow-k8s-executor-example"
+version = "0.1.0"
+description = ""
+authors = ["sawaca96 <sawaca96@hanmail.net>"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.10"
+apache-airflow = "^2.1.0"
+apache-airflow-providers-cncf-kubernetes = "^1.2.0"
+
+[tool.poetry.dev-dependencies]
+black = "^21.5b1"
+flake8 = "^3.9.2"
+isort = "^5.8.0"
+pre-commit = "^2.12.1"
+Jinja2 = "2.11.3"
+questionary = "^1.9.0"
+typer = "^0.3.2"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

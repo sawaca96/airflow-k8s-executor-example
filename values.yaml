@@ -1,0 +1,115 @@
+###################################
+# Airflow - Common Configs
+###################################
+airflow:
+  image:
+    repository: apache/airflow
+    tag: 2.1.0-python3.8
+    ## values: Always or IfNotPresent
+    pullPolicy: IfNotPresent
+    pullSecret: ""
+    uid: 50000
+    gid: 50000
+
+  executor: KubernetesExecutor
+
+  config:
+    AIRFLOW__KUBERNETES__DELETE_WORKER_PODS: "True"
+    PYTHONPATH: $PYTHONPATH:/opt/airflow/dags/repo
+    AIRFLOW__CORE__DEFAULT_TIMEZONE: Asia/Seoul
+
+  users: []
+
+
+###################################
+# Airflow - WebUI Configs
+###################################
+web:
+  webserverConfig:
+    stringOverride: |-
+      """Default configuration for the Airflow webserver"""
+      import os
+      from flask_appbuilder.security.manager import AUTH_DB
+      from airflow.configuration import conf
+      basedir = os.path.abspath(os.path.dirname(__file__))
+      # The SQLAlchemy connection string.
+      SQLALCHEMY_DATABASE_URI = conf.get('core', 'SQL_ALCHEMY_CONN')
+      # Flask-WTF flag for CSRF
+      WTF_CSRF_ENABLED = True
+      AUTH_TYPE = AUTH_DB
+      APP_THEME = "flatly.css"
+
+###################################
+# Airflow - Celery Worker Configs
+###################################
+workers:
+  enabled: false
+
+###################################
+# Airflow - Flower Configs
+###################################
+flower:
+  enabled: false
+
+###################################
+# Database - Redis Chart
+# - https://github.com/helm/charts/tree/master/stable/redis
+###################################
+redis:
+  enabled: false
+
+###################################
+# Airflow - Logs Configs
+###################################
+logs:
+  path: /opt/airflow/logs
+  persistence:
+    enabled: true
+    existingClaim: ""
+    subPath: ""
+    storageClass: ""
+    accessMode: ReadWriteMany
+    size: 1Gi
+
+###################################
+# Airflow - DAGs Configs
+###################################
+dags:
+  path: /opt/airflow/dags
+
+  gitSync:
+    enabled: true
+
+    image:
+      repository: k8s.gcr.io/git-sync/git-sync
+      tag: v3.2.2
+      ## values: Always or IfNotPresent
+      pullPolicy: IfNotPresent
+      uid: 65533
+      gid: 65533
+
+    repo: http://github.com/sawaca96/airflow-k8s-executor-example
+    repoSubPath: dags
+    branch: main
+    revision: HEAD
+    depth: 1
+    syncWait: 60
+    syncTimeout: 120
+
+###################################
+# Database - PostgreSQL Chart
+# - https://github.com/helm/charts/tree/master/stable/postgresql
+###################################
+postgresql:
+  enabled: true
+
+  postgresqlDatabase: airflow
+  postgresqlUsername: postgres
+  postgresqlPassword: airflow
+
+  persistence:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi

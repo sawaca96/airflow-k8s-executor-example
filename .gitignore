@@ -1,0 +1,16 @@
+#settings
+.vscode
+.python-version
+
+#secrets
+**/*.env.*
+.env.*
+**/*.env
+
+#pycache
+__pycache__
+**.pyc
+
+#mypy
+.mypy_cache
+
