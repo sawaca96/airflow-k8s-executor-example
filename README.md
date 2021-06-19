@@ -10,38 +10,27 @@
 
 ## Start Guide
 
-1. git hook Setting
-
-   > 💡 스크립트 실행에 문제가 있다면, `chmod 700 ./pre-commit.sh` 명령어를 통해 실행권한을 줍니다.
-
-   ```
-   ./pre-commit.sh
-   ```
-
-2. Create kubernetes namespace
+1. Create kubernetes namespace
 
    ```
    kubectl create namespace airflow
    ```
 
-3. Create kubernetes secret
+2. Create kubernetes secret
 
    ```
    # airflow-secrets
    kubectl apply -f secrets/secrets.yaml -n airflow
-
-   # crawler-env
-   kubectl apply -f secrets/crawler.yaml -n airflow
    ```
 
-4. Add helm repo
+3. Add helm repo
 
    ```
    helm repo add airflow-stable https://airflow-helm.github.io/charts
    helm repo update
    ```
 
-5. Install helm chart & Update helm chart
+4. Install helm chart & Update helm chart
 
    ```
    # helm install
@@ -51,7 +40,7 @@
    helm upgrade -f values.yaml airflow airflow-stable/airflow -n airflow
    ```
 
-6. airflow web port-forwarding
+5. airflow web port-forwarding
 
    ```
    kubectl port-forward service/airflow-web 8080:8080 -n airflow
