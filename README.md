@@ -10,6 +10,8 @@
 
 ## Start Guide
 
+> ✨ [KR Documentation](https://sawaca96.tistory.com/12)
+
 1. Create kubernetes namespace
 
    ```
